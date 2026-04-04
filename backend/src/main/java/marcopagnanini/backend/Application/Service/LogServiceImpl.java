@@ -16,6 +16,7 @@ public class LogServiceImpl implements LogService {
 
     @Override
     public Log save(Log log, String projectId) {
+        log.setProjectId(projectId);
         return logRepository.save(log, projectId);
     }
 
