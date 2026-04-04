@@ -1,7 +1,6 @@
 package marcopagnanini.backend.Model;
 
 import lombok.*;
-import marcopagnanini.backend.Utils.Enum.LogType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,13 +10,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Document
-public class Log {
+@Document(collection = "projects")
+public class Project {
     @Id
     private String id;
-    private String projectId;
-    private LogType level;
-    private String message;
-    private LocalDateTime timestamp;
-    private String stackTrace;
+    private String name;
+    private String description;
+    private LocalDateTime createdAt;
 }
