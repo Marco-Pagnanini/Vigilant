@@ -1,0 +1,27 @@
+{
+  "groups": [
+    {
+      "name": "vigilant",
+      "type": "io.vigilant.VigilantConfig",
+      "sourceType": "io.vigilant.VigilantConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "vigilant.api-key",
+      "type": "java.lang.String",
+      "sourceType": "io.vigilant.VigilantConfig"
+    },
+    {
+      "name": "vigilant.project-id",
+      "type": "java.lang.String",
+      "sourceType": "io.vigilant.VigilantConfig"
+    },
+    {
+      "name": "vigilant.server-url",
+      "type": "java.lang.String",
+      "sourceType": "io.vigilant.VigilantConfig"
+    }
+  ],
+  "hints": []
+}

@@ -1,0 +1,69 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "io.vigilant",
+    "module": "vigilant-sdk-java-springboot",
+    "version": "0.0.1",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.10"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "vigilant-sdk-java-springboot-0.0.1.jar",
+          "url": "vigilant-sdk-java-springboot-0.0.1.jar",
+          "size": 7277,
+          "sha512": "0830a376a9f0218f4ee613e45f125d00644a7ecee51093cfae721c2c5babb489491847111b846bd89040139b2485d0135e43c417a612f13919b52ee92489fbec",
+          "sha256": "bda41b322dc67dd2faa22adf22da99112c97e50708a12ac41ddc91ed92cdd477",
+          "sha1": "29a49b432f3e24e2bccdaba5c34dd76ddc5ab88d",
+          "md5": "be66e9786f6f5ff0c01511bd88e04606"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "com.fasterxml.jackson.core",
+          "module": "jackson-databind",
+          "version": {
+            "requires": "2.17.1"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "vigilant-sdk-java-springboot-0.0.1.jar",
+          "url": "vigilant-sdk-java-springboot-0.0.1.jar",
+          "size": 7277,
+          "sha512": "0830a376a9f0218f4ee613e45f125d00644a7ecee51093cfae721c2c5babb489491847111b846bd89040139b2485d0135e43c417a612f13919b52ee92489fbec",
+          "sha256": "bda41b322dc67dd2faa22adf22da99112c97e50708a12ac41ddc91ed92cdd477",
+          "sha1": "29a49b432f3e24e2bccdaba5c34dd76ddc5ab88d",
+          "md5": "be66e9786f6f5ff0c01511bd88e04606"
+        }
+      ]
+    }
+  ]
+}
