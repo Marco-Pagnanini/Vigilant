@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Vigilant.Sdk</id>
+    <version>0.0.1</version>
+    <authors>Vigilant</authors>
+    <description>Vigilant SDK for ASP.NET Core</description>
+    <repository type="git" commit="fd38bfb856567aa5473b0dec7056cf6ba3dc8c8d" />
+    <dependencies>
+      <group targetFramework="net10.0">
+        <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="8.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Logging" version="8.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Options" version="8.0.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="/Users/marcopagnanini/code/PortFolio/Vigilant/SDK/csharp/bin/Release/net10.0/Vigilant.Sdk.dll" target="lib/net10.0/Vigilant.Sdk.dll" />
+  </files>
+</package>

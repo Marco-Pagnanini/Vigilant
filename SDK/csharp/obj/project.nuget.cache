@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "dgSpecHash": "4QlwpOxqMuQ=",
+  "success": true,
+  "projectFilePath": "/Users/marcopagnanini/code/PortFolio/Vigilant/SDK/csharp/Vigilant.Sdk.csproj",
+  "expectedPackageFiles": [
+    "/Users/marcopagnanini/.nuget/packages/microsoft.extensions.dependencyinjection/8.0.0/microsoft.extensions.dependencyinjection.8.0.0.nupkg.sha512",
+    "/Users/marcopagnanini/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/8.0.0/microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "/Users/marcopagnanini/.nuget/packages/microsoft.extensions.logging/8.0.0/microsoft.extensions.logging.8.0.0.nupkg.sha512",
+    "/Users/marcopagnanini/.nuget/packages/microsoft.extensions.logging.abstractions/8.0.0/microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
+    "/Users/marcopagnanini/.nuget/packages/microsoft.extensions.options/8.0.0/microsoft.extensions.options.8.0.0.nupkg.sha512",
+    "/Users/marcopagnanini/.nuget/packages/microsoft.extensions.primitives/8.0.0/microsoft.extensions.primitives.8.0.0.nupkg.sha512",
+    "/Users/marcopagnanini/.nuget/packages/microsoft.netcore.app.ref/8.0.25/microsoft.netcore.app.ref.8.0.25.nupkg.sha512",
+    "/Users/marcopagnanini/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.25/microsoft.aspnetcore.app.ref.8.0.25.nupkg.sha512",
+    "/Users/marcopagnanini/.nuget/packages/microsoft.netcore.app.ref/9.0.14/microsoft.netcore.app.ref.9.0.14.nupkg.sha512",
+    "/Users/marcopagnanini/.nuget/packages/microsoft.aspnetcore.app.ref/9.0.14/microsoft.aspnetcore.app.ref.9.0.14.nupkg.sha512"
+  ],
+  "logs": []
+}

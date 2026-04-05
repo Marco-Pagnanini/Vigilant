@@ -1,0 +1,13 @@
+/Users/marcopagnanini/code/PortFolio/Vigilant/SDK/csharp/bin/Release/net10.0/Vigilant.Sdk.deps.json
+/Users/marcopagnanini/code/PortFolio/Vigilant/SDK/csharp/bin/Release/net10.0/Vigilant.Sdk.dll
+/Users/marcopagnanini/code/PortFolio/Vigilant/SDK/csharp/bin/Release/net10.0/Vigilant.Sdk.pdb
+/Users/marcopagnanini/code/PortFolio/Vigilant/SDK/csharp/obj/Release/net10.0/Vigilant.Sdk.csproj.AssemblyReference.cache
+/Users/marcopagnanini/code/PortFolio/Vigilant/SDK/csharp/obj/Release/net10.0/Vigilant.Sdk.GeneratedMSBuildEditorConfig.editorconfig
+/Users/marcopagnanini/code/PortFolio/Vigilant/SDK/csharp/obj/Release/net10.0/Vigilant.Sdk.AssemblyInfoInputs.cache
+/Users/marcopagnanini/code/PortFolio/Vigilant/SDK/csharp/obj/Release/net10.0/Vigilant.Sdk.AssemblyInfo.cs
+/Users/marcopagnanini/code/PortFolio/Vigilant/SDK/csharp/obj/Release/net10.0/Vigilant.Sdk.csproj.CoreCompileInputs.cache
+/Users/marcopagnanini/code/PortFolio/Vigilant/SDK/csharp/obj/Release/net10.0/Vigilant.Sdk.sourcelink.json
+/Users/marcopagnanini/code/PortFolio/Vigilant/SDK/csharp/obj/Release/net10.0/Vigilant.Sdk.dll
+/Users/marcopagnanini/code/PortFolio/Vigilant/SDK/csharp/obj/Release/net10.0/refint/Vigilant.Sdk.dll
+/Users/marcopagnanini/code/PortFolio/Vigilant/SDK/csharp/obj/Release/net10.0/Vigilant.Sdk.pdb
+/Users/marcopagnanini/code/PortFolio/Vigilant/SDK/csharp/obj/Release/net10.0/ref/Vigilant.Sdk.dll
