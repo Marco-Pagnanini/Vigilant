@@ -13,10 +13,7 @@ public class VigilantAutoConfiguration {
 
     @Bean
     public VigilantAppender vigilantAppender(VigilantConfig config) {
-        VigilantAppender appender = new VigilantAppender();
-        appender.setServerUrl(config.getServerUrl());
-        appender.setProjectId(config.getProjectId());
-        appender.setApiKey(config.getApiKey());
+        VigilantAppender appender = new VigilantAppender(config);
         appender.start();
 
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();

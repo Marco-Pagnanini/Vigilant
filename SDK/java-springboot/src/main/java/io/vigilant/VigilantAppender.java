@@ -1,32 +1,33 @@
 package io.vigilant;
 
+import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.AppenderBase;
-import lombok.Setter;
 
-@Setter
 public class VigilantAppender extends AppenderBase<ILoggingEvent> {
 
-    private String serverUrl;
-    private String projectId;
-    private String apiKey;
-
+    private final VigilantConfig vigilantConfig;
     private VigilantClient vigilantClient;
-    private VigilantConfig vigilantConfig;
+
+    public VigilantAppender(VigilantConfig vigilantConfig) {
+        this.vigilantConfig = vigilantConfig;
+    }
 
     @Override
     public void start() {
-        if (serverUrl == null || projectId == null || apiKey == null) {
+        if (vigilantConfig.getServerUrl() == null || vigilantConfig.getProjectId() == null || vigilantConfig.getApiKey() == null) {
             addError("[Vigilant] serverUrl, projectId and apiKey are required");
             return;
         }
-        vigilantConfig = new VigilantConfig(serverUrl, projectId, apiKey);
         vigilantClient = new VigilantClient();
         super.start();
     }
 
     @Override
     protected void append(ILoggingEvent event) {
-        vigilantClient.sendLog(event, vigilantConfig);
+        Level minLevel = Level.valueOf(vigilantConfig.getMinLevel());
+        if (event.getLevel().isGreaterOrEqual(minLevel)) {
+            vigilantClient.sendLog(event, vigilantConfig);
+        }
     }
 }

@@ -13,12 +13,6 @@
       "sourceType": "io.vigilant.VigilantConfig"
     },
     {
-      "name": "vigilant.min-level",
-      "type": "java.lang.String",
-      "sourceType": "io.vigilant.VigilantConfig",
-      "defaultValue": "INFO"
-    },
-    {
       "name": "vigilant.project-id",
       "type": "java.lang.String",
       "sourceType": "io.vigilant.VigilantConfig"

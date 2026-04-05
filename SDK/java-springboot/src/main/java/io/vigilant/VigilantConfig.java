@@ -14,4 +14,5 @@ public class VigilantConfig {
     private String serverUrl;
     private String projectId;
     private String apiKey;
+    private String minLevel = "INFO";
 }
