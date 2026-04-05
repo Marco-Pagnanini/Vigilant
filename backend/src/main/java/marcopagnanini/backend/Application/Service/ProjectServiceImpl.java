@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +18,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project save(Project project) {
+        project.setApiKey(UUID.randomUUID().toString());
         project.setCreatedAt(LocalDateTime.now());
         return projectRepository.save(project);
     }

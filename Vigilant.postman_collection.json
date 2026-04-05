@@ -7,6 +7,10 @@
     {
       "key": "baseUrl",
       "value": "http://localhost:8080"
+    },
+    {
+      "key": "apiKey",
+      "value": "ca496947-42a8-4918-a2da-9c895f30ac79"
     }
   ],
   "item": [
@@ -54,6 +58,12 @@
           "name": "Get logs by project (paginated)",
           "request": {
             "method": "GET",
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/api/logs/:projectId?page=0&size=20",
               "host": ["{{baseUrl}}"],
@@ -61,7 +71,7 @@
               "variable": [
                 {
                   "key": "projectId",
-                  "value": "your-project-id"
+                  "value": "69d1a6e08db17840d9bee360"
                 }
               ],
               "query": [
@@ -85,6 +95,10 @@
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
               }
             ],
             "url": {
@@ -94,7 +108,7 @@
               "variable": [
                 {
                   "key": "projectId",
-                  "value": "your-project-id"
+                  "value": "69d1a6e08db17840d9bee360"
                 }
               ]
             },
