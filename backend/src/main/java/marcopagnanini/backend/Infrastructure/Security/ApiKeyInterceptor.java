@@ -16,6 +16,11 @@ public class ApiKeyInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        // GET requests are used by the dashboard to read logs — no API key required
+        if ("GET".equalsIgnoreCase(request.getMethod())) {
+            return true;
+        }
+
         String apiKey = request.getHeader("X-API-Key");
         String projectId = extractProjectId(request.getRequestURI());
 
