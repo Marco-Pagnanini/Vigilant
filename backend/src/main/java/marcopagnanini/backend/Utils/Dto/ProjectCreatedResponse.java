@@ -1,4 +1,4 @@
-package marcopagnanini.backend.Api.DTO;
+package marcopagnanini.backend.Utils.Dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

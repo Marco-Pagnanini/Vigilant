@@ -1,8 +1,8 @@
 package marcopagnanini.backend.Api;
 
 import lombok.RequiredArgsConstructor;
-import marcopagnanini.backend.Api.DTO.ProjectCreatedResponse;
-import marcopagnanini.backend.Api.DTO.ProjectResponse;
+import marcopagnanini.backend.Utils.Dto.ProjectCreatedResponse;
+import marcopagnanini.backend.Utils.Dto.ProjectResponse;
 import marcopagnanini.backend.Application.Abstraction.Service.ProjectService;
 import marcopagnanini.backend.Model.Project;
 import org.springframework.http.ResponseEntity;
