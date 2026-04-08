@@ -3,13 +3,14 @@
 </p>
 
 <h1 align="center">Vigilant</h1>
-<p align="center">Open-source, lightweight log monitoring — a simpler alternative to Sentry.</p>
+<p align="center">Open-source, self-hosted log monitoring — a simpler alternative to Sentry.</p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Spring%20Boot-4.x-6DB33F?style=flat-square&logo=springboot&logoColor=white" />
   <img src="https://img.shields.io/badge/MongoDB-7-47A248?style=flat-square&logo=mongodb&logoColor=white" />
   <img src="https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black" />
   <img src="https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white" />
+  <img src="https://img.shields.io/badge/Docker-Compose-2496ED?style=flat-square&logo=docker&logoColor=white" />
   <img src="https://img.shields.io/badge/Java%20SDK-Maven-C71A36?style=flat-square&logo=apachemaven&logoColor=white" />
   <img src="https://img.shields.io/badge/C%23%20SDK-NuGet-004880?style=flat-square&logo=nuget&logoColor=white" />
 </p>
@@ -28,9 +29,7 @@
 
 ## What is Vigilant?
 
-Vigilant is a self-hosted log monitoring platform that lets you collect, store, and visualize logs from any application in real time.
-
-It consists of three parts:
+Vigilant is a self-hosted log monitoring platform that lets you collect, store, and visualize logs from any application in real time. Everything runs on your own machine or server — no third-party services, no data leaving your infrastructure.
 
 | Component | Description |
 |-----------|-------------|
@@ -40,76 +39,137 @@ It consists of three parts:
 
 ---
 
+## Quick Start
+
+The only prerequisite is **Docker**. Clone the repo and start everything with one command.
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/your-username/vigilant.git
+cd vigilant
+```
+
+### 2. Configure credentials
+
+Open `docker-compose.yml` and set your admin credentials and a strong JWT secret before starting:
+
+```yaml
+backend:
+  environment:
+    ADMIN_USERNAME: admin          # change this
+    ADMIN_PASSWORD: changeme       # change this
+    JWT_SECRET: change-this-secret-to-something-long-and-random  # change this (min 32 chars)
+```
+
+> These are the credentials you will use to log in to the dashboard. The JWT secret is used to sign authentication tokens — use a long random string.
+
+### 3. Start everything
+
+```bash
+docker compose up --build
+```
+
+This starts three services:
+- `mongodb` — database (internal, not exposed)
+- `backend` — Spring Boot API on port 8080 (internal)
+- `frontend` — Nginx serving the React app on **port 80**
+
+Wait for the logs to show `Started BackendApplication`, then open your browser.
+
+### 4. Open the dashboard
+
+```
+http://localhost
+```
+
+You will be redirected to the login page. Sign in with the credentials you set in step 2 (defaults: `admin` / `changeme`).
+
+### 5. Create your first project
+
+Once logged in, you will see the dashboard. Create a project to get started — each project gets a unique **API key** that your application uses to send logs.
+
+> The API key is shown **only once** at creation time. Copy it and store it somewhere safe.
+
+### 6. Connect your application
+
+Use the API key and project ID from the previous step to configure one of the SDKs (see [SDKs](#sdks) below). Your logs will appear in the dashboard in real time.
+
+---
+
 ## Architecture
 
 ```
-Your App (Java / C#)
+Your App (Java / C# / any HTTP client)
        │
        │  POST /api/logs/{projectId}
        │  X-API-Key: <project-api-key>
        ▼
-  ┌─────────────┐        ┌───────────────┐
-  │  Spring Boot │──────▶│   MongoDB 7   │
-  │   Backend    │        │  (Docker)     │
-  └─────────────┘        └───────────────┘
-       │
-       │  GET /api/logs/{projectId}
-       ▼
-  ┌─────────────┐
-  │    React    │
-  │  Dashboard  │
-  └─────────────┘
+┌──────────────┐     ┌──────────────────┐
+│    Nginx     │────▶│   Spring Boot    │────▶  MongoDB 7
+│  (port 80)   │     │    Backend       │
+│              │     │  (port 8080,     │
+│  React SPA   │     │   internal)      │
+└──────────────┘     └──────────────────┘
+       ▲
+       │  Browser
+       │  http://localhost
 ```
 
-Each project gets its own MongoDB collection (`logs_<projectId>`), keeping data isolated and queries fast.
+The frontend is served by Nginx, which also acts as a reverse proxy — all `/api/` calls from the browser are forwarded internally to the backend. The backend and MongoDB are not exposed outside Docker.
+
+Each project stores logs in its own MongoDB collection (`logs_<projectId>`), keeping data isolated and queries fast.
 
 ---
 
-## Getting Started
+## Authentication
 
-### Prerequisites
+Vigilant uses **JWT-based authentication** for the dashboard and **API key authentication** for log ingestion.
 
-- Docker
-- Java 17+
-- Node.js 18+
+| Route | Auth |
+|-------|------|
+| `POST /api/auth/login` | None — returns a JWT token |
+| `GET /api/projects` | JWT (`Authorization: Bearer <token>`) |
+| `POST /api/projects` | JWT |
+| `GET /api/logs/{projectId}` | JWT |
+| `POST /api/logs/{projectId}` | API Key (`X-API-Key` header) |
 
-### 1. Start MongoDB
-
-```bash
-docker-compose up -d
-```
-
-MongoDB will be available at `mongodb://vigilant:vigilant@localhost:27017/vigilant`.
-
-### 2. Start the Backend (I will work for start with docker it's 1.00 am now)
-
-```bash
-cd backend
-./gradlew bootRun
-```
-
-The API will be available at `http://localhost:8080`.
-
-### 3. Start the Frontend
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-The dashboard will be available at `http://localhost:5173`.
+Dashboard credentials are configured via environment variables in `docker-compose.yml`. There is a single admin user — this is intentional for a self-hosted tool.
 
 ---
 
 ## API Reference
 
+### Auth
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/auth/login` | Login and receive a JWT token |
+
+**Request:**
+```json
+{
+  "username": "admin",
+  "password": "changeme"
+}
+```
+**Response:**
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiJ9..."
+}
+```
+
+---
+
 ### Projects
 
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| `GET` | `/api/projects` | — | List all projects |
-| `POST` | `/api/projects` | — | Create a new project (returns API key) |
+> All project endpoints require `Authorization: Bearer <token>` header.
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/projects` | List all projects |
+| `POST` | `/api/projects` | Create a new project (returns API key) |
 
 **Create project — request body:**
 ```json
@@ -130,13 +190,15 @@ The dashboard will be available at `http://localhost:5173`.
 }
 ```
 
-> **Keep the API key safe** — it will only be returned once at creation time.
+> **Keep the API key safe** — it is returned only once at creation time.
+
+---
 
 ### Logs
 
 | Method | Endpoint | Auth | Description |
 |--------|----------|------|-------------|
-| `GET` | `/api/logs/{projectId}?page=0&size=20` | — | Paginated log list |
+| `GET` | `/api/logs/{projectId}?page=0&size=20` | JWT | Paginated log list |
 | `POST` | `/api/logs/{projectId}` | `X-API-Key` | Send a new log |
 
 **Send a log — request body:**
@@ -208,37 +270,71 @@ All `ILogger` calls are automatically forwarded. Log levels are mapped as follow
 
 ---
 
+## Configuration Reference
+
+All backend configuration is done through environment variables in `docker-compose.yml`:
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `ADMIN_USERNAME` | `admin` | Dashboard login username |
+| `ADMIN_PASSWORD` | `changeme` | Dashboard login password |
+| `JWT_SECRET` | *(insecure default)* | Secret key for signing JWT tokens — **must be changed** |
+| `JWT_EXPIRATION` | `86400000` | Token expiry in milliseconds (default: 24h) |
+| `MONGODB_URI` | local MongoDB | Full MongoDB connection string |
+| `CORS_ALLOWED_ORIGINS` | `http://localhost:5173,http://localhost` | Comma-separated list of allowed CORS origins |
+
+---
+
+## Local Development (without Docker)
+
+If you want to run services individually for development:
+
+**Prerequisites:** Java 17+, Node.js 18+, MongoDB running locally
+
+**Backend:**
+```bash
+cd backend
+./gradlew bootRun
+```
+API available at `http://localhost:8080`.
+
+**Frontend:**
+```bash
+cd frontend
+npm install
+npm run dev
+```
+Dashboard available at `http://localhost:5173`. The `.env.development` file points the API to `http://localhost:8080` automatically.
+
+---
+
 ## Project Structure
 
 ```
 Vigilant/
 ├── backend/                  # Spring Boot API
+│   ├── Dockerfile
 │   └── src/main/java/
-│       ├── Api/              # Controllers + DTOs
+│       ├── Api/              # Controllers (Auth, Projects, Logs)
 │       ├── Application/      # Services + Repository interfaces
-│       ├── Infrastructure/   # MongoDB impl + Security
+│       ├── Infrastructure/   # MongoDB impl + Security (JWT, ApiKey, CORS)
 │       └── Model/            # Domain entities
 │
 ├── frontend/                 # React dashboard
+│   ├── Dockerfile
+│   ├── nginx.conf            # Reverse proxy config
 │   └── src/
-│       ├── api/              # Axios calls
+│       ├── api/              # Axios calls (auth, projects, logs)
 │       ├── components/       # UI components (shadcn/ui)
+│       ├── pages/            # LoginPage
 │       └── types/            # TypeScript interfaces
 │
 ├── SDK/
 │   ├── java-springboot/      # Java SDK (Logback + AutoConfiguration)
 │   └── csharp/               # C# SDK (ILoggerProvider)
 │
-└── docker-compose.yml        # MongoDB
+└── docker-compose.yml        # Full stack: MongoDB + Backend + Frontend
 ```
-
----
-
-## Security
-
-- **Write** (`POST /api/logs`) requires a valid `X-API-Key` header matched against the project's stored key
-- **Read** (`GET /api/logs`, `GET /api/projects`) is open — intended for the internal dashboard
-- Each project has its own unique API key, generated at creation time
 
 ---
 
@@ -247,7 +343,10 @@ Vigilant/
 | Layer | Technology |
 |-------|-----------|
 | Backend | Spring Boot 4, MongoDB, Lombok, Clean Architecture |
-| Database | MongoDB 7 via Docker |
+| Database | MongoDB 7 |
 | Frontend | React 19, TypeScript, Vite, TanStack Query, shadcn/ui, Tailwind CSS v4 |
+| Serving | Nginx (reverse proxy + static files) |
+| Auth | JWT (dashboard) + API Key per project (log ingestion) |
 | Java SDK | Logback `AppenderBase`, Spring Boot AutoConfiguration |
 | C# SDK | `ILoggerProvider`, `ILogger`, .NET 8 / 9 / 10 |
+| Infrastructure | Docker Compose |
