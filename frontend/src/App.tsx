@@ -1,13 +1,17 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { fetchProjects } from './api/projects'
+import { getToken, removeToken } from './api/auth'
 import { ProjectCard } from './components/ProjectCard'
 import { AppSidebar } from './components/AppSidebar'
 import { LogsTable } from './components/LogsTable'
+import { LoginPage } from './pages/LoginPage'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { Separator } from '@/components/ui/separator'
+import { Button } from '@/components/ui/button'
+import { LogOut } from 'lucide-react'
 
-function App() {
+function Dashboard({ onLogout }: { onLogout: () => void }) {
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null)
 
   const { data: projects = [], isLoading, isError } = useQuery({
@@ -32,11 +36,15 @@ function App() {
           <header className="flex items-center gap-3 px-6 py-4 border-b border-border">
             <SidebarTrigger />
             <Separator orientation="vertical" className="h-5" />
-            <span className="text-sm text-muted-foreground">
+            <span className="text-sm text-muted-foreground flex-1">
               {selectedProjectId
                 ? projects.find(p => p.id === selectedProjectId)?.name
                 : 'Dashboard'}
             </span>
+            <Button variant="ghost" size="sm" onClick={onLogout} className="gap-2 text-muted-foreground">
+              <LogOut className="w-4 h-4" />
+              Logout
+            </Button>
           </header>
 
           {/* Main content */}
@@ -58,11 +66,9 @@ function App() {
 
               <Separator className="mb-6" />
 
-              {/* Loading / Error */}
               {isLoading && <p className="text-sm text-muted-foreground">Loading...</p>}
               {isError && <p className="text-sm text-destructive">Failed to load projects.</p>}
 
-              {/* Projects grid */}
               {!selectedProjectId && (
                 <div className="flex flex-col gap-3">
                   {projects.map(project => (
@@ -76,7 +82,6 @@ function App() {
                 </div>
               )}
 
-              {/* Selected project logs */}
               {selectedProjectId && (
                 <LogsTable projectId={selectedProjectId} />
               )}
@@ -87,6 +92,23 @@ function App() {
       </div>
     </SidebarProvider>
   )
+}
+
+function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(() => !!getToken())
+
+  const handleLogin = () => setIsAuthenticated(true)
+
+  const handleLogout = () => {
+    removeToken()
+    setIsAuthenticated(false)
+  }
+
+  if (!isAuthenticated) {
+    return <LoginPage onLogin={handleLogin} />
+  }
+
+  return <Dashboard onLogout={handleLogout} />
 }
 
 export default App
