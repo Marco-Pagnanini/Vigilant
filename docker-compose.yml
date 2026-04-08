@@ -2,14 +2,32 @@ services:
   mongodb:
     image: mongo:7
     container_name: vigilant-mongodb
-    ports:
-      - "27017:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: vigilant
       MONGO_INITDB_ROOT_PASSWORD: vigilant
       MONGO_INITDB_DATABASE: vigilant
     volumes:
       - mongodb_data:/data/db
+
+  backend:
+    build: ./backend
+    container_name: vigilant-backend
+    depends_on:
+      - mongodb
+    environment:
+      MONGODB_URI: mongodb://vigilant:vigilant@mongodb:27017/vigilant?authSource=admin
+      ADMIN_USERNAME: admin
+      ADMIN_PASSWORD: changeme
+      JWT_SECRET: change-this-secret-to-something-long-and-random
+      JWT_EXPIRATION: 86400000
+
+  frontend:
+    build: ./frontend
+    container_name: vigilant-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
 
 volumes:
   mongodb_data:

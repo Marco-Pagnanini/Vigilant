@@ -2,7 +2,7 @@ import axios from 'axios'
 import type { Log } from '../types/log'
 import { getToken } from './auth'
 
-const BASE_URL = 'http://localhost:8080'
+const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? ''
 
 export const fetchLogs = async (projectId: string, page = 0, size = 20): Promise<{
   content: Log[]
