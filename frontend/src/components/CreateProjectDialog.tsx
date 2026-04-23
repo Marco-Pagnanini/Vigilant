@@ -25,13 +25,15 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [apiKey, setApiKey] = useState<string | null>(null)
-  const [copied, setCopied] = useState(false)
+  const [projectId, setProjectId] = useState<string | null>(null)
+  const [copied, setCopied] = useState<'id' | 'key' | null>(null)
 
   const mutation = useMutation({
     mutationFn: () => createProject(name.trim(), description.trim()),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['projects'] })
       setApiKey(data.apiKey)
+      setProjectId(data.id)
     },
   })
 
@@ -41,18 +43,18 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
     mutation.mutate()
   }
 
-  const handleCopy = () => {
-    if (!apiKey) return
-    navigator.clipboard.writeText(apiKey)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+  const handleCopy = (value: string, field: 'id' | 'key') => {
+    navigator.clipboard.writeText(value)
+    setCopied(field)
+    setTimeout(() => setCopied(null), 2000)
   }
 
   const handleClose = () => {
     setName('')
     setDescription('')
     setApiKey(null)
-    setCopied(false)
+    setProjectId(null)
+    setCopied(null)
     mutation.reset()
     onOpenChange(false)
   }
@@ -118,6 +120,24 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
             </Alert>
 
             <div className="flex flex-col gap-1.5">
+              <Label>Project ID</Label>
+              <div className="flex items-center gap-2">
+                <code className="flex-1 rounded-md bg-muted px-3 py-2 text-xs font-mono break-all">
+                  {projectId}
+                </code>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  onClick={() => handleCopy(projectId!, 'id')}
+                  className="shrink-0"
+                >
+                  {copied === 'id' ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
+                </Button>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-1.5">
               <Label>API Key</Label>
               <div className="flex items-center gap-2">
                 <code className="flex-1 rounded-md bg-muted px-3 py-2 text-xs font-mono break-all">
@@ -127,10 +147,10 @@ export function CreateProjectDialog({ open, onOpenChange }: CreateProjectDialogP
                   type="button"
                   variant="outline"
                   size="icon"
-                  onClick={handleCopy}
+                  onClick={() => handleCopy(apiKey!, 'key')}
                   className="shrink-0"
                 >
-                  {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
+                  {copied === 'key' ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
                 </Button>
               </div>
             </div>
