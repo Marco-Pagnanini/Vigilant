@@ -6,13 +6,15 @@ import { ProjectCard } from './components/ProjectCard'
 import { AppSidebar } from './components/AppSidebar'
 import { LogsTable } from './components/LogsTable'
 import { LoginPage } from './pages/LoginPage'
+import { CreateProjectDialog } from './components/CreateProjectDialog'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
-import { LogOut } from 'lucide-react'
+import { LogOut, FolderPlus } from 'lucide-react'
 
 function Dashboard({ onLogout }: { onLogout: () => void }) {
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null)
+  const [createDialogOpen, setCreateDialogOpen] = useState(false)
 
   const { data: projects = [], isLoading, isError } = useQuery({
     queryKey: ['projects'],
@@ -41,6 +43,11 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
                 ? projects.find(p => p.id === selectedProjectId)?.name
                 : 'Dashboard'}
             </span>
+            <Button variant="ghost" size="sm" onClick={() => setCreateDialogOpen(true)} className="gap-2 text-muted-foreground">
+              <FolderPlus className="w-4 h-4" />
+              Add Project
+            </Button>
+            <CreateProjectDialog open={createDialogOpen} onOpenChange={setCreateDialogOpen} />
             <Button variant="ghost" size="sm" onClick={onLogout} className="gap-2 text-muted-foreground">
               <LogOut className="w-4 h-4" />
               Logout
